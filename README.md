@@ -1,6 +1,6 @@
 About
 -----
-This script is coded by Shai Halfon in Python language.
+Every script here is coded by Shai Halfon in Python language.
 
 Disclaimer
 ----------
