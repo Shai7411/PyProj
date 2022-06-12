@@ -30,7 +30,7 @@ if platform.system().lower() == "windows" or platform.system().lower() == "linux
 
                     os.path.exists(wordlist_path)
                     if os.path.exists(wordlist_path):
-                        if wordlist_path.endswith('.txt'):
+                        if platform.system().lower() == "linux":
                             wordlist = []
                             with open(wordlist_path, "r") as file:
                                 for j in file.readlines():
@@ -49,7 +49,8 @@ if platform.system().lower() == "windows" or platform.system().lower() == "linux
                                     for i in wordlist:
                                         request = http.request("GET", f"{url}/{i}")
                                         if request.status == 200:
-                                            print(f"[{counter}] | {url}/{i} | {colors.GREEN}Page Found.{colors.NORMAL}")
+                                            print(
+                                                f"[{counter}] | {url}/{i} | {colors.GREEN}Page Found.{colors.NORMAL}")
                                             xlist.append(f"[{counter}] | {url}/{i} | Page Found.")
                                         elif request.status == 404:
                                             print(
@@ -79,10 +80,60 @@ if platform.system().lower() == "windows" or platform.system().lower() == "linux
                                     print(
                                         f"{colors.YELLOW}You requested to scan {url}, Request Status: {request.status}.{colors.NORMAL}\n")
                                     break
-                        else:
-                            wordlist_path_splited = str(wordlist_path).split("\\")
-                            print(
-                                f"{colors.YELLOW}Your file [{wordlist_path_splited[-1]}] is not a text (.txt) file.{colors.NORMAL}")
+                        elif platform.system().lower() == "windows":
+                            if wordlist_path.endswith('.txt'):
+                                wordlist = []
+                                with open(wordlist_path, "r") as file:
+                                    for j in file.readlines():
+                                        data = "".join(j.split("\n"))
+                                        wordlist.append(data)
+
+                                    http = urllib3.PoolManager()
+                                    request = http.request("GET", url)
+
+                                    if request.status == 200:
+                                        print(
+                                            f"{colors.GREEN}You requested to scan {url}, Request Status: {request.status}.{colors.NORMAL}\n")
+
+                                        counter = 1
+                                        xlist = []
+                                        for i in wordlist:
+                                            request = http.request("GET", f"{url}/{i}")
+                                            if request.status == 200:
+                                                print(f"[{counter}] | {url}/{i} | {colors.GREEN}Page Found.{colors.NORMAL}")
+                                                xlist.append(f"[{counter}] | {url}/{i} | Page Found.")
+                                            elif request.status == 404:
+                                                print(
+                                                    f"[{counter}] | {url}/{i} | {colors.RED}Page Not Found.{colors.NORMAL}")
+                                                xlist.append(f"[{counter}] | {url}/{i} | Page Not Found.")
+                                            counter += 1
+
+                                        bool = True
+                                        bool2 = True
+                                        while True:
+                                            output = input(
+                                                f"\n{colors.BLUE}Would you like to save the result into a text file (y/n) ? {colors.NORMAL}").lower()
+                                            if output == "y".lower():
+                                                output_path = input(
+                                                    f"{colors.BLUE}Enter a path where you like to save the file: {colors.NORMAL}")
+                                                for i in xlist:
+                                                    with open(output_path, "a") as file:
+                                                        file.write(f"{i}\n")
+                                                break
+                                            elif output == "n".lower():
+                                                break
+                                    elif request.status > 400 or request.status < 499:
+                                        print(
+                                            f"{colors.YELLOW}You requested to scan {url}, Request Status: {request.status}.{colors.NORMAL}\n")
+                                        break
+                                    elif request.status > 500 or request.status < 599:
+                                        print(
+                                            f"{colors.YELLOW}You requested to scan {url}, Request Status: {request.status}.{colors.NORMAL}\n")
+                                        break
+                            else:
+                                wordlist_path_splited = str(wordlist_path).split("\\")
+                                print(
+                                    f"{colors.YELLOW}Your file [{wordlist_path_splited[-1]}] is not a text (.txt) file.{colors.NORMAL}")
                     else:
                         print(f"{colors.YELLOW}Your path [{wordlist_path}] does not exist.{colors.NORMAL}")
             elif int(intro) == 9:
