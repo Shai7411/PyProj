@@ -146,4 +146,4 @@ if platform.system().lower() == "windows" or platform.system().lower() == "linux
         else:
             print(f"{colors.YELLOW}Your choice [{intro}] option should be digits only.{colors.NORMAL}\n")
 else:
-    print(f"{colors.YELLOW}This script is for Windows / Linux Operation Systems only.{colors.NORMAL}\n")
+    print(f"{colors.YELLOW}This script is for Windows / Linux Operation Systems only.{colors.NORMAL}")
