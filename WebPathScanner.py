@@ -9,7 +9,7 @@ class colors:
     BLUE = '\033[94m'
     RED = '\033[91m'
 
-if platform.system().lower() == "windows":
+if platform.system().lower() == "windows" or platform.system().lower() == "linux":
     bool = False
     while True:
         if bool:
@@ -95,4 +95,4 @@ if platform.system().lower() == "windows":
         else:
             print(f"{colors.YELLOW}Your choice [{intro}] option should be digits only.{colors.NORMAL}\n")
 else:
-    print(f"{colors.YELLOW}This script is for Windows Operation Systems only.{colors.NORMAL}\n")
+    print(f"{colors.YELLOW}This script is for Windows / Linux Operation Systems only.{colors.NORMAL}\n")
